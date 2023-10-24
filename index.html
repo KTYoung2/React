@@ -12,62 +12,46 @@
         element 생성 ! 
     -->
 </body>
-<script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
 <!-- 어플리케이션이 상호작용하도록 만들어주는 라이브러리리(페키지)-->
-<script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
 <!-- react-dom : 리엑트 엘레먼츠들을 html에 두는 역할을 함 -->
+<script src="https://unpkg.com/prop-types/prop-types.js"></script>
 <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 <script type="text/babel">
-    const root = document.getElementById("root");
-   
-    function App() {
-        const [minutes, setMinutes] = React.useState(0);
-        const [flipped, setFlipped] = React.useState(false);
-        const onChange = (event) => {
-            setMinutes(event.target.value);
-        }; 
-        const reset = () => {
-            setMinutes(0);
-        };
 
-        const onFlip = () => {
-            reset();
-            setFlipped((current) => !current);
-        }
-
-        return (
-        <div>
-            <h1>Super Converter</h1>
-            <div>
-                <label htmlFor="minutes">Minutes</label>
-                <input 
-                    value={flipped ? minutes * 60 : minutes} 
-                    id="minutes" 
-                    placeholder="Minutes" 
-                    type="number" 
-                    onChange={onChange}
-                    disabled={flipped}
-                    />
-            </div>
-            <div>
-                <label htmlFor="hours">Hours</label>
-                <input 
-                    value={flipped ? minutes : Math.round(minutes / 60)} 
-                    id="hours" 
-                    placeholder="Hours" 
-                    type="number"
-                    disabled={!flipped}
-                    onChange={onChange} 
-                    />
-            </div>
-            <button onClick={reset}>Reset</button>
-            <button onClick={onFlip}>Flip</button>
-        </div>
-        );
+    function Btn ({text, changeValue, fontSize = 16}) {
+        return <button
+            onClick={changeValue} 
+            style={{
+            backgroundColor: "tomato",
+            color:"white",
+            padding:"10px 20px",
+            border : 0,
+            borderRadius: 10,
+            fontSize,
+        }}>
+         {text}
+         </button>;
     }
 
+    Btn.propTypes = {
+        text : PropTypes.string.isRequired,
+        fontSize : PropTypes.number,
+    };
 
-    ReactDOM.render(<App />, root);
-
+    function App() {
+        const [value, setValue] = React.useState("Save Changes");
+        const changeValue = () => setValue("Revert Changes");
+        return (
+            <div>
+                <Btn text={value} changeValue={changeValue} fontSize={18}/>
+                <Btn text={"Content"} />
+            </div>
+            );
+        }
+            
+    const root = document.getElementById("root");
+    ReactDOM.createRoot(root).render(<App />);
    </script>
 </html>
