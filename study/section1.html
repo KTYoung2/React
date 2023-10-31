@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+        <!--
+            리액트는 html에 코드를 직접 작성하지 않는다. js와 react js를 이용하여
+            element 생성 ! 
+         -->
+</body>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<!-- 어플리케이션이 상호작용하도록 만들어주는 라이브러리리(페키지)-->
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- react-dom : 리엑트 엘레먼츠들을 html에 두는 역할을 함 -->
+<script src="https://unpkg.com/prop-types/prop-types.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+const root = document.getElementById("root");
+
+/* jsx란? JavaScript를 확장한 문법 
+보통의 html과 비슷 하지만 property를 html 태그의 속성처럼 적으면 된다. 
+*/
+const Title = () => (
+                //리액트는 프로퍼티에다가 event listener를 등록 할 수 있음 !
+    <h3 id="title" onMouseEnter={() => console.log("인늉")}>
+        Hello 
+    </h3>
+);
+
+/*
+    렌더하기 위해선 변수 -> 함수화 시키기. 
+    const Btton = ( 
+    <button onClick={() => console.log("클릭")}>
+        Click Me</button>
+
+        =>
+
+    const Btton = () => ( 
+    <button onClick={() => console.log("클릭")}>
+        Click Me</button>
+); 
+    = () => arrow function 추가 해주면 됨.  
+
+
+);
+
+*/
+const Button = () => ( 
+    <button onClick={() => console.log("클릭")}>
+        Click Me</button>
+);
+ 
+
+//컴포넌트의 첫글자는 반드시 대문자여야 한다. 소문자면 element로 인식
+/* 컴포넌트란? 컴포넌트는 UI의 일부를 제어하는 "재사용 가능한 코드."" 
+         JavaScript에서 함수의 역할을 React에게서 담당하는 것과 같음
+         즉 분리된 코드(함수)들을 한번에 렌더링한다고 생각하면됨
+*/
+const Container = () => (
+    <div>
+        <Title />
+        <Button />
+    </div>
+
+);
+
+ReactDOM.render(< Container />, root);
+//nodejs render와 같은 역할 , elements를 어디에 위치할 것인지
+
+
+</script>
+</html>
