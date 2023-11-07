@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="root"></div>
+</body>
+
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<!-- 어플리케이션이 상호작용하도록 만들어주는 라이브러리리(페키지)-->
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<!-- react-dom : 리엑트 엘레먼츠들을 html에 두는 역할을 함 -->
+<script src="https://unpkg.com/prop-types/prop-types.js"></script>
+<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel">
+
+/*
+ Props란? 
+ 부모 컴포넌트로부터 자식 컴포넌트에게 데이터를 보낼 수 있게 해주는 방식 
+
+
+function SaveBtn() {
+    return <button style={{
+        backgroundColor: "tomato",
+        color : "white",
+        padding: "10px 20px",
+        border: 0,
+        borderRadius: 10,
+    }}>SAVE CHANGES</button>;
+}
+
+function ConfirmBtn(){
+    return <button style={{
+        backgroundColor: "tomato",
+        color : "white",
+        padding: "10px 20px",
+        border: 0,
+        borderRadius: 10,
+    }}>COMFIRM</button>;
+}
+
+오직 text만 변경 되는데 
+이렇게 버튼 스타일을 하나하나 복붙해서 설정해주는 건 
+너무 비효율적. Btn 하나의 컴포터넌을 만들어 재사용하기 !
+*/
+
+    //다른 컴포넌트로 받는 인자-> props (유일한 인자(오브젝트형식))
+    //굳이 props를 적기 보단 ({인자이름}) 프로퍼티를 오브젝트로 꺼내서 냅다적어주기 ~
+function Btn({text, onClick, big = false}) {
+    return (
+        <button
+            onClick={onClick} 
+            style={{
+            backgroundColor: "tomato",
+            color : "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            //prop을 기반으로 프로퍼티 안에 if, else문을 사용할 수 있음 
+            fontSize: big ? 18 : 16,
+        }}>
+            {text}
+        </button>
+    );
+}
+
+/* Prop Type 
+부모로부터 전달받은 prop의 데이터 type을 검사한다. 
+자식 컴포넌트에서 명시해 놓은 데이터 타입과 부모로부터 넘겨받은 데이터 타입이 일치하지 않으면 
+콘솔에 에러 경고문이 띄워진다. 
+
+Btn.propTypes = {
+    text : PropTypes.string.isRequired,
+    big : propTypes.bool,
+};
+
+*/
+
+
+
+
+/*
+부모의 컴포넌트에서 state가 바뀌면 자식 컴포넌트들이 모두 리렌더 된다.
+대신 각각의 자식 컴포넌트에서 state를 바꾸면 다른 형제 컴포넌들까지 
+다시 리렌더 되지는 않는다 !!! 
+*/
+ 
+function App() {
+    const [value, setValue] = React.useState("Save Changes");
+    const changeValue = () => setValue("Revert Changes");
+    return (
+        <div>
+            <Btn text={value} 
+            /* 자식 컴포터넌에도 funtion을 보낼 수 있음.
+                설정한 onClick은 이벤트 리스너가 아닌 text="Continue" 와 같은 props임!
+                이벤트가 발생하려면 Btn funtion에 설정해야함 */
+                onClick={changeValue}
+                big={true}/>
+            <Btn text="Continue" big={false} />
+            {/* Btn 함수를 부르고 있을 뿐 정보를 함수에 전달하는 것. 
+                text=> 다른 컴포넌트로 보내는 인자 (이름 아무거나 설정 가능)는
+                object 형식으로 첫번째 인자에 보내진다.*/}
+        </div>
+    );
+}
+
+
+
+
+
+const root = document.getElementById("root");
+ReactDOM.render(<App/>, root);
+</script>
+</html>

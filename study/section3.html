@@ -18,53 +18,89 @@
 <script type="text/babel">
 
 
-const App = () => {         
-    //input 값 얻어내기
-    const [minutes, setMinutes] = React.useState(0);    
-    const [flipped, setFlipped ] = React.useState(false);
-    //input 값이 바뀌면 실행되는 함수
-    const onChange = (event) => {
-                //리액트에서 실행해주는 event를 통해 input 값을 얻어낼 수 있다 !
-        console.log(event.target.value);
-        setMinutes(event.target.value);
+function MinutesToHours() {
+        const [minutes, setMinutes] = React.useState(0);    
+        const [flipped, setFlipped ] = React.useState(false);
+        //input 값이 바뀌면 실행되는 함수
+        const onChange = (event) => {
+                    //리액트에서 실행해주는 event를 통해 input 값을 얻어낼 수 있다 !
+            console.log(event.target.value);
+            setMinutes(event.target.value);
+        }
+        const reset = () => setMinutes(0);
+        const onFlip = () => { 
+            reset();
+            setFlipped((currnet) => !currnet);
+        }
+        
+        return (
+            <div>               
+                <div>
+                    <lable htmlFor="minutes">Miuntes</lable>
+                    <input 
+                        /* input 과 value를 연결해주는 이유
+                            : input값을 외부에서도 수정해주기 위해서
+                            리셋 버튼을 누르면 값이 0이 될수 잇잔음 */
+                        value={flipped ? minutes * 60 : minutes}
+                        id="minutes" 
+                        placeholder="Miuntes" 
+                        type="number"
+                        onChange={onChange} 
+                        disabled={flipped === true} 
+                    />
+                </div>
+                <div>
+                    <lable htmlFor="hours">Hours</lable>
+                    <input 
+                        value={flipped ? minutes : Math.round(minutes / 60) }
+                        id="hours" 
+                        placeholder="Hours" 
+                        type="number"
+                        onChange={onChange}
+                        disabled={flipped === false} 
+                    />
+                </div>
+                <br />
+                <button onClick={reset}>Reset💣</button>
+                <button onClick={onFlip}>{flipped ? "Turn back↩️" : "flipped🔃"}</button>
+            </div>
+            );
     }
-    const reset = () => setMinutes(0);
-    const onFlip = () => { 
-        reset();
-        setFlipped((currnet) => !currnet);
+
+
+function KmToMiles() {
+    return <h1>KM 2 M</h1>;
+}
+
+
+function App () {    
+    const [index, setIndex] = React.useState("0");
+    const onSelect = (event) => {
+        setIndex(event.target.value);
     }
-    
     return (
+
+        /* 컴포터넌트 그안에 또 다른 컴포터넌트를 렌더링 살 수 있다.
+            <App /> 컴포터넌트 안에 
+            <MinutesToHours /> <KmToMiles /> 두개 렌더링
+
+            리렌더링 조건 
+            1.props 바뀔때 
+            2.state가 바뀔때
+            3.부모 컴포넌트가 리렌더링 될 때 
+        */
+
         <div>               
-            <h1>Super Converter⏱️</h1>
-            <div>
-                <lable htmlFor="minutes">Miuntes</lable>
-                <input 
-                    /* input 과 value를 연결해주는 이유
-                        : input값을 외부에서도 수정해주기 위해서
-                        리셋 버튼을 누르면 값이 0이 될수 잇잔음 */
-                    value={flipped ? minutes * 60 : minutes}
-                    id="minutes" 
-                    placeholder="Miuntes" 
-                    type="number"
-                    onChange={onChange} 
-                    disabled={flipped === true} 
-                />
-            </div>
-            <div>
-                <lable htmlFor="hours">Hours</lable>
-                <input 
-                    value={flipped ? minutes : Math.round(minutes / 60) }
-                    id="hours" 
-                    placeholder="Hours" 
-                    type="number"
-                    onChange={onChange}
-                    disabled={flipped === false} 
-                />
-            </div>
-            <br />
-            <button onClick={reset}>Reset💣</button>
-            <button onClick={onFlip}>Flip🔃</button>
+            <h1>Super Converter 📟</h1>
+            <select value={index} onChange={onSelect}>
+                <option value="0">Select units</option>
+                <option value="1">Minutes & Hours⏱️</option>
+                <option value="2">Km & Miles⚠️</option>
+                </select>
+                <hr />
+            { index === "0" ? "Please select your units😉" : null }
+            { index === "1" ? <MinutesToHours /> : null }
+            { index === "2" ? <KmToMiles /> : null }
         </div>
         );
     };
