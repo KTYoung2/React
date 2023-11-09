@@ -69,7 +69,44 @@ function MinutesToHours() {
 
 
 function KmToMiles() {
-    return <h1>KM 2 M</h1>;
+    const [kilometer, setKilometer] = React.useState(0);
+    const [flipped, setFlipped ] = React.useState(false);
+    const onChange = (event) => {
+        setKilometer(event.target.value);
+    }
+    const reset = () => setKilometer(0);
+    const onFlip = () => { 
+            reset();
+            setFlipped((currnet) => !currnet);
+    }
+        
+    return (
+        <div>
+            <div>
+                <lable htmlFor="kilometer">Kilometer(km)</lable>
+                <input 
+                    value={flipped ? kilometer * 1.609 : kilometer}
+                    id="kilometer"
+                    type="number" 
+                    placeholder="Km" 
+                    onChange={onChange}
+                    disabled={flipped === true} />
+            </div>
+            <div>
+                <lable htmlFor="mile">Mile(m)</lable>
+                <input 
+                    value={flipped ? kilometer  : kilometer / 1.609 }
+                    id="mile"
+                    type="number"
+                    placeholder="m"
+                    onChange={onChange}
+                    disabled={flipped === false} 
+                />
+            </div>
+            <button onClick={reset}>Reset💣</button>
+            <button onClick={onFlip}>{flipped ? "Turn back↩️" : "flipped🔃"}</button>
+        </div>
+    );
 }
 
 
